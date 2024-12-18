@@ -1,9 +1,17 @@
  import {DataTypes, Model} from 'sequelize';
 import sequelize from '../database/db'
+ import {UserRole} from "@epehc/sharedutilities/enums/userRole";
 
- class User extends Model {}
 
- User.init(
+ class Usuario extends Model {
+     public id!: string;
+     public name!: string;
+     public email!: string;
+     public roles!: UserRole[];
+     public google_id!: string;
+ }
+
+ Usuario.init(
      {
          id: {
              type: DataTypes.UUID,
@@ -21,21 +29,19 @@ import sequelize from '../database/db'
          },
          roles: {
              type: DataTypes.ARRAY(DataTypes.STRING),
-             defaultValue: ['user'],
+             defaultValue: [UserRole.Reclutador],
          },
          google_id: {
              type: DataTypes.STRING,
-         },
-         password: {
-             type: DataTypes.STRING,
+             allowNull: false,
          },
      },
      {
          sequelize,
-         modelName: 'User',
-         tableName: 'users',
+         modelName: 'Usuario',
+         tableName: 'usuarios',
          timestamps: true,
      }
  )
 
- export default User;
+ export default Usuario;

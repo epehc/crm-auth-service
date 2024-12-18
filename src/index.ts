@@ -3,10 +3,14 @@ import * as bodyParser from "body-parser";
 import passport from "./middlewares/passport";
 import authRoutes from "./routes/authRoutes";
 import sequelize from "./database/db";
+import {validateEnv} from "./utils/validateEnv";
+import {setupSwagger} from "./utils/swagger";
 
 const app = express();
 
 app.use(bodyParser.json());
+validateEnv();
+setupSwagger(app);
 app.use(passport.initialize());
 app.use('/auth', authRoutes)
 
