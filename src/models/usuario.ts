@@ -35,6 +35,14 @@ import sequelize from '../database/db'
              type: DataTypes.STRING,
              allowNull: false,
          },
+         createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: new Date(),
+         },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: new Date(),
+        },
      },
      {
          sequelize,
