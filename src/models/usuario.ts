@@ -29,7 +29,7 @@ import sequelize from '../database/db'
          },
          roles: {
              type: DataTypes.ARRAY(DataTypes.STRING),
-             defaultValue: [UserRole.Reclutador],
+             defaultValue: [UserRole.Admin, UserRole.Reclutador],
          },
          google_id: {
              type: DataTypes.STRING,

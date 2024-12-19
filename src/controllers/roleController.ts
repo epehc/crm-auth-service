@@ -38,6 +38,7 @@ export const assignRole = async (req: Request, res: Response): Promise<void> => 
     if (!errors.isEmpty()) {
         logger.error('Error al asignar roles: ', errors);
         res.status(400).json({ errors: errors.array() });
+        return
     }
     const { userId, roles } = req.body;
 
@@ -95,6 +96,7 @@ export const makeAdmin = async (req: Request, res: Response): Promise<void> => {
     if (!errors.isEmpty()) {
         logger.error('Error al asignar roles: ', errors);
         res.status(400).json({ errors: errors.array() });
+        return
     }
     const { userId } = req.body;
 
@@ -149,6 +151,7 @@ export const removeAdmin = async (req: Request, res: Response): Promise<void> =>
     if (!errors.isEmpty()) {
         logger.error('Error al asignar roles: ', errors);
         res.status(400).json({ errors: errors.array() });
+        return
     }
     const { userId } = req.body;
 
