@@ -48,6 +48,7 @@ router.get(
         try{
             const token = jwt.sign({
                 id: req.user.id,
+                email: req.user.email,
                 roles: req.user.roles
             },
                 process.env.JWT_SECRET!, {
@@ -91,9 +92,9 @@ router.get(
  *         description: Access denied.
  */
 router.post("/roles/assign",
+    authenticateJWT,
+    authorize([UserRole.Admin]),
     [
-        authenticateJWT,
-        authorize([UserRole.Admin]),
         body('id').isUUID().withMessage('Invalid user ID'),
         body('roles')
             .isArray()
@@ -127,11 +128,13 @@ router.post("/roles/assign",
  *       403:
  *         description: Access denied.
  */
-router.post('/roles/make-admin', [
+router.post('/roles/make-admin',
     authenticateJWT,
     authorize([UserRole.Admin]),
+    [
     body('id').isUUID().withMessage('Invalid user ID')
-], makeAdmin)
+    ],
+    makeAdmin)
 
 /**
  * @swagger
@@ -156,10 +159,12 @@ router.post('/roles/make-admin', [
  *       403:
  *         description: Access denied.
  */
-router.post('/roles/remove-admin', [
+router.post('/roles/remove-admin',
     authenticateJWT,
     authorize([UserRole.Admin]),
+    [
     body('id').isUUID().withMessage('Invalid user ID')
-],  removeAdmin)
+    ],
+    removeAdmin)
 
 export default router;
