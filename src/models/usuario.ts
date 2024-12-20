@@ -47,7 +47,7 @@ import sequelize from '../database/db'
      {
          sequelize,
          modelName: 'Usuario',
-         tableName: 'usuarios',
+         tableName: 'users',
          timestamps: true,
      }
  )
