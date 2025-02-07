@@ -1,3 +1,10 @@
 #Environment Variables
 .env
 .env.*
+
+/node_modules
+/dist
+
+*.js
+
+/.idea
