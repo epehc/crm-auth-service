@@ -14,8 +14,7 @@ import sequelize from '../database/db'
  Usuario.init(
      {
          id: {
-             type: DataTypes.UUID,
-             defaultValue: DataTypes.UUIDV4,
+             type: DataTypes.STRING,
              primaryKey: true,
          },
          name: {
@@ -30,10 +29,6 @@ import sequelize from '../database/db'
          roles: {
              type: DataTypes.ARRAY(DataTypes.STRING),
              defaultValue: [UserRole.Admin, UserRole.Reclutador],
-         },
-         google_id: {
-             type: DataTypes.STRING,
-             allowNull: false,
          },
          createdAt: {
             type: DataTypes.DATE,
