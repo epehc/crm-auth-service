@@ -2,7 +2,7 @@ import {Request, Router} from "express";
 import passport from "../middlewares/passport";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
-import {assignRole, makeAdmin, removeAdmin} from "../controllers/roleController";
+import {assignRole, createUser, getUserById, makeAdmin, removeAdmin} from "../controllers/roleController";
 import { authenticateJWT } from "@epehc/sharedutilities/middlewares/authMiddleware";
 import { authorize } from "@epehc/sharedutilities/middlewares/authorize";
 import { UserRole } from "@epehc/sharedutilities/enums/userRole";
@@ -166,5 +166,10 @@ router.post('/roles/remove-admin',
     body('id').isUUID().withMessage('Invalid user ID')
     ],
     removeAdmin)
+
+router.post('/users', createUser)
+
+router.get('/users/:id', getUserById);
+
 
 export default router;
