@@ -3,6 +3,8 @@ import Usuario from "../models/usuario";
 import logger from "../utils/logger";
 import {validationResult} from "express-validator";
 import {UserRole} from "@epehc/sharedutilities/enums/userRole";
+import { v4 as uuidv4 } from 'uuid';
+
 
 /**
  * @swagger
@@ -173,3 +175,56 @@ export const removeAdmin = async (req: Request, res: Response): Promise<void> =>
         res.status(500).json({ error: "Failed to remove admin role" });
     }
 };
+
+
+export const createUser = async (req: Request, res: Response): Promise<void> => {
+    const { id, name, email, roles } = req.body;
+
+    try {
+        const existingUser = await Usuario.findOne({ where: { id } });
+
+        if (existingUser) {
+            res.status(200).json(existingUser);
+            return;
+        }
+
+        const newUser = await Usuario.create({
+            id, // Generate a UUID for the user ID
+            name,
+            email,
+            roles, // Assign default role if not provided
+        });
+
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.error('Error creating/updating user:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+export const getUserById = async (req:Request, res:Response) => {
+    try {
+        const { id } = req.params;
+
+        // Fetch user from the database
+        const user = await Usuario.findOne({ where: { id } });
+
+        if (!user) {
+             res.status(404).json({ error: "User not found" });
+             return;
+        }
+
+        // Send user details as response
+        res.status(200).json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            roles: user.roles,
+        });
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
