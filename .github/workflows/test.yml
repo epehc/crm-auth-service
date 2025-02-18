@@ -1,0 +1,52 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Configure NPM authentication
+        run: |
+          echo "@epehc:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PACKAGES_TOKEN }}" >> .npmrc
+
+      - name: Install dependencies
+        run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Install TypeScript
+        run: npm install -g typescript
+
+      - name: Clean and Rebuild
+        run: |
+          rm -rf node_modules
+          npm install
+          npx tsc --noEmit
+
+      - name: Run Tests
+        run: npm run test:all
