@@ -101,7 +101,8 @@ router.post("/roles/assign",
             .withMessage('Roles must be an array')
             .custom((roles: any) => roles.every((role: any) => Object.values(UserRole).includes(role)))
             .withMessage('Invalid roles provided'),
-    ], assignRole
+    ], 
+    assignRole
 )
 
 
@@ -134,7 +135,8 @@ router.post('/roles/make-admin',
     [
     body('id').isUUID().withMessage('Invalid user ID')
     ],
-    makeAdmin)
+    makeAdmin
+)
 
 /**
  * @swagger
