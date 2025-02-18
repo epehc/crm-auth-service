@@ -5,7 +5,7 @@
 /node_modules
 /dist
 
-*.js
+/src/*/*.js
 
 /.idea
 
