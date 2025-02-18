@@ -11,7 +11,15 @@ jest.mock(
     authorize: () => (req: any, res: any, next: any) => next(),
   })
 );
+
+// Mock jsonwebtoken so that jwt.sign returns a dummy token
+jest.mock("jsonwebtoken", () => ({
+  sign: jest.fn(() => "dummy-token"),
+}));
+
 import * as roleController from "../../src/controllers/roleController";
+import { UserRole } from "@epehc/sharedutilities/enums/userRole";
+
 // Stub route controllers from roleController to simulate responses.
 jest
   .spyOn(roleController, "assignRole")
@@ -57,9 +65,6 @@ jest
     }
   });
 
-import { UserRole } from "@epehc/sharedutilities/enums/userRole";
-
-
 // Stub passport to bypass Google OAuth flow.
 jest.mock("../../src/middlewares/passport", () => ({
   authenticate: jest.fn((strategy: string, options: any) => {
@@ -95,7 +100,7 @@ describe("Auth Routes Integration Tests", () => {
   test("GET /google/callback returns a JWT token", async () => {
     const res = await request(app).get("/google/callback");
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("token");
+    expect(res.body).toHaveProperty("token", "dummy-token");
   });
 
   test("POST /roles/assign returns role assignment success", async () => {
