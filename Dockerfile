@@ -4,6 +4,7 @@ FROM node:18
 # Set the working directory inside the container
 WORKDIR /app
 
+# Pass the GitHub token as a build argument
 ARG GITHUB_TOKEN
 RUN echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > /root/.npmrc
 
