@@ -192,7 +192,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
             id, // Generate a UUID for the user ID
             name,
             email,
-            roles, // Assign default role if not provided
+            roles: [UserRole.Admin, UserRole.Reclutador], // Assign default role if not provided
         });
 
         res.status(201).json(newUser);
